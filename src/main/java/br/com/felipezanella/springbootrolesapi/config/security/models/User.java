@@ -1,8 +1,7 @@
 package br.com.felipezanella.springbootrolesapi.config.security.models;
 
-import br.com.felipezanella.springbootrolesapi.config.security.repository.RoleRepository;
+import br.com.felipezanella.springbootrolesapi.config.security.service.RoleService;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,7 +25,7 @@ public class User implements UserDetails {
     private String name;
 
     @Column(name = "id_role")
-    private Long idRoles;
+    private Long idRole;
 
     public User() {
 
@@ -34,13 +33,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
         List<Roles> roles = new ArrayList<>();
-        Roles role = new Roles();
-        role.setId(3L);
-        role.setRole("adm");
-        roles.add(role);
-
+        roles.add(new RoleService().findRoleById(this.idRole));
         return roles;
     }
 
